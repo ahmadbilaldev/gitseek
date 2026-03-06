@@ -1,0 +1,34 @@
+{
+	"name": "gitseek",
+	"version": "0.1.0",
+	"description": "Interactive git branch explorer with GitHub PR status",
+	"type": "module",
+	"bin": {
+		"gitseek": "dist/index.mjs",
+		"gs": "dist/index.mjs"
+	},
+	"main": "dist/index.mjs",
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch src",
+		"typecheck": "tsc --noEmit",
+		"start": "node dist/index.mjs"
+	},
+	"keywords": ["git", "branch", "cli", "github", "interactive"],
+	"license": "MIT",
+	"dependencies": {
+		"chalk": "^5.5.0",
+		"commander": "^14.0.0",
+		"ink": "6.6.0",
+		"ink-spinner": "^5.0.0",
+		"ink-text-input": "^6.0.0",
+		"react": "^19.1.1",
+		"figures": "^6.1.0",
+		"date-fns": "^4.1.0"
+	},
+	"devDependencies": {
+		"@types/react": "^19.1.0",
+		"tsup": "^8.4.0",
+		"typescript": "^5.8.0"
+	}
+}
