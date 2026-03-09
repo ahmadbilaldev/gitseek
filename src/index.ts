@@ -2,7 +2,7 @@ import {Command} from 'commander';
 import {render} from 'ink';
 import React from 'react';
 import App from './tui/app.js';
-import {isGitRepo, getBranches, getCurrentUserEmail, getPRsForBranches} from './utils/git.js';
+import {isGitRepo, isGhInstalled, isGhAuthenticated, getBranches, getCurrentUserEmail, getGitHubUsername, getPRsForBranches} from './utils/git.js';
 import {printBranches} from './utils/print.js';
 
 const program = new Command('gitseek')
@@ -18,8 +18,16 @@ const program = new Command('gitseek')
 			process.exit(1);
 		}
 
+		if (!isGhInstalled()) {
+			console.warn('GitHub CLI (gh) not found. PR status, assignee matching, and open PR will be unavailable.');
+			console.warn('Install it: https://cli.github.com\n');
+		} else if (!isGhAuthenticated()) {
+			console.warn('GitHub CLI not authenticated. Run `gh auth login` to enable PR features.\n');
+		}
+
 		if (options.print || !process.stdin.isTTY) {
 			const email = getCurrentUserEmail();
+			const ghUser = getGitHubUsername();
 			let branches = getBranches(options.all ?? false);
 			const prMap = getPRsForBranches();
 			for (const b of branches) {
@@ -27,7 +35,11 @@ const program = new Command('gitseek')
 				if (pr) b.pr = pr;
 			}
 			if (options.mine) {
-				branches = branches.filter(b => b.authorEmail === email);
+				branches = branches.filter(
+					b =>
+						b.authorEmail === email ||
+						(ghUser && b.pr?.assignees.includes(ghUser)),
+				);
 			}
 			if (options.search) {
 				const q = options.search.toLowerCase();

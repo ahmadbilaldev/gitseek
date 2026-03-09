@@ -17,6 +17,7 @@ export interface PullRequest {
 	title: string;
 	state: 'OPEN' | 'MERGED' | 'CLOSED' | 'DRAFT';
 	url: string;
+	assignees: string[];
 }
 
 export interface BranchFilters {

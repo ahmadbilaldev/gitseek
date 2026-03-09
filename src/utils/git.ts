@@ -13,6 +13,14 @@ export function isGitRepo(): boolean {
 	return exec('git rev-parse --is-inside-work-tree') === 'true';
 }
 
+export function isGhInstalled(): boolean {
+	return exec('gh --version') !== '';
+}
+
+export function isGhAuthenticated(): boolean {
+	return exec('gh auth status') !== '' || exec('gh api user --jq .login') !== '';
+}
+
 export function getCurrentUserEmail(): string {
 	return exec('git config user.email');
 }
@@ -79,12 +87,16 @@ export function getBranches(includeRemote: boolean): Branch[] {
 		.filter((b): b is Branch => b !== null);
 }
 
+export function getGitHubUsername(): string {
+	return exec('gh api user --jq .login');
+}
+
 export function getPRsForBranches(): Map<string, PullRequest> {
 	const prMap = new Map<string, PullRequest>();
 
 	try {
 		const raw = exec(
-			`gh pr list --state all --limit 100 --json headRefName,number,title,state,url`,
+			`gh pr list --state all --limit 200 --json headRefName,number,title,state,url,assignees`,
 		);
 		if (!raw) return prMap;
 
@@ -94,6 +106,7 @@ export function getPRsForBranches(): Map<string, PullRequest> {
 			title: string;
 			state: string;
 			url: string;
+			assignees: Array<{login: string}>;
 		}>;
 
 		for (const pr of prs) {
@@ -102,6 +115,7 @@ export function getPRsForBranches(): Map<string, PullRequest> {
 				title: pr.title,
 				state: pr.state as PullRequest['state'],
 				url: pr.url,
+				assignees: pr.assignees.map(a => a.login),
 			});
 		}
 	} catch {
@@ -117,6 +131,15 @@ export function checkoutBranch(name: string): {ok: boolean; error?: string} {
 		return {ok: true};
 	} catch (e: any) {
 		return {ok: false, error: e.stderr || e.message};
+	}
+}
+
+export function openUrl(url: string): void {
+	const cmd = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
+	try {
+		execSync(`${cmd} ${url}`, {stdio: ['pipe', 'pipe', 'pipe']});
+	} catch {
+		// silently fail
 	}
 }
 

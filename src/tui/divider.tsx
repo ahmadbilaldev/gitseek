@@ -15,7 +15,7 @@ const Divider: React.FC<DividerProps> = ({
 	dividerColor = PALETTE.GRAY,
 	padding = 0,
 }) => {
-	const totalWidth = Math.max(0, (process.stdout.columns ?? 80) - padding * 2);
+	const totalWidth = Math.max(0, (process.stdout.columns ?? 80) - padding * 2 - 2);
 	const titleText = title ? `${title} ` : '';
 	const lineText = '─'.repeat(Math.max(0, totalWidth - titleText.length));
 

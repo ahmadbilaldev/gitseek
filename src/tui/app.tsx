@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import Spinner from 'ink-spinner';
 import {ACCENT, MUTED, PALETTE, STATUS_COLORS} from './colors.js';
 import Divider from './divider.js';
-import BranchRow from './branch-row.js';
+import BranchRow, {BranchHeader} from './branch-row.js';
 import StatusBar from './status-bar.js';
 import type {Branch, BranchFilters} from '../types/branch.js';
 import {
@@ -11,7 +11,9 @@ import {
 	deleteBranch,
 	getBranches,
 	getCurrentUserEmail,
+	getGitHubUsername,
 	getPRsForBranches,
+	openUrl,
 } from '../utils/git.js';
 
 interface AppProps {
@@ -36,11 +38,13 @@ const App: React.FC<AppProps> = ({initialMine = false, initialRemote = false, in
 	const [statusMessage, setStatusMessage] = useState<StatusMessage>();
 	const [confirmDelete, setConfirmDelete] = useState<{name: string; force: boolean} | null>(null);
 	const [userEmail, setUserEmail] = useState('');
+	const [ghUsername, setGhUsername] = useState('');
 
 	// Load branches
 	useEffect(() => {
 		const email = getCurrentUserEmail();
 		setUserEmail(email);
+		setGhUsername(getGitHubUsername());
 
 		const allBranches = getBranches(filters.remote);
 		const prMap = getPRsForBranches();
@@ -59,7 +63,11 @@ const App: React.FC<AppProps> = ({initialMine = false, initialRemote = false, in
 		let result = branches;
 
 		if (filters.mine) {
-			result = result.filter(b => b.authorEmail === userEmail);
+			result = result.filter(
+				b =>
+					b.authorEmail === userEmail ||
+					(ghUsername && b.pr?.assignees.includes(ghUsername)),
+			);
 		}
 
 		if (filters.search) {
@@ -154,9 +162,17 @@ const App: React.FC<AppProps> = ({initialMine = false, initialRemote = false, in
 
 	const visibleBranches = filtered.slice(scrollOffset, scrollOffset + maxVisible);
 	const maxNameWidth = Math.min(
-		40,
+		30,
 		Math.max(...filtered.map(b => b.name.length), 10),
 	);
+	const maxAuthorWidth = Math.min(
+		16,
+		Math.max(...filtered.map(b => b.authorName.length), 8),
+	);
+	const hasPRs = filtered.some(b => b.pr);
+	const prColWidth = hasPRs
+		? Math.max(...filtered.map(b => (b.pr ? `#${b.pr.number}`.length : 0)), 2)
+		: 0;
 
 	useInput((input, key) => {
 		// Search mode input handling
@@ -195,6 +211,15 @@ const App: React.FC<AppProps> = ({initialMine = false, initialRemote = false, in
 
 		// Actions
 		if (key.return) handleCheckout();
+		if (input === 'o') {
+			const branch = filtered[selectedIndex];
+			if (branch?.pr?.url) {
+				openUrl(branch.pr.url);
+				showStatus(`Opened PR #${branch.pr.number}`, STATUS_COLORS.SUCCESS);
+			} else {
+				showStatus('No PR for this branch', STATUS_COLORS.WARNING);
+			}
+		}
 		if (input === 'd') handleDelete(false);
 		if (input === 'D') handleDelete(true);
 		if (input === 'm') {
@@ -252,6 +277,10 @@ const App: React.FC<AppProps> = ({initialMine = false, initialRemote = false, in
 
 			<Divider />
 
+			{filtered.length > 0 && (
+				<BranchHeader maxNameWidth={maxNameWidth} maxAuthorWidth={maxAuthorWidth} prColWidth={prColWidth} />
+			)}
+
 			{filtered.length === 0 ? (
 				<Box paddingY={1}>
 					<Text color={MUTED}>No branches found.</Text>
@@ -263,6 +292,8 @@ const App: React.FC<AppProps> = ({initialMine = false, initialRemote = false, in
 						branch={branch}
 						isSelected={scrollOffset + i === selectedIndex}
 						maxNameWidth={maxNameWidth}
+						maxAuthorWidth={maxAuthorWidth}
+						prColWidth={prColWidth}
 					/>
 				))
 			)}

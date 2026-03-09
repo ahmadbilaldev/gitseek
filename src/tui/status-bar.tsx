@@ -31,7 +31,7 @@ const StatusBar: React.FC<StatusBarProps> = ({total, filtered, mine, remote, mes
 			</Box>
 			<Box>
 				<Text dimColor>
-					enter:checkout d:delete D:force-delete m:mine r:remote /:search q:quit
+					{'↑↓ navigate · Enter checkout · / search · m mine · r remote · o open PR · d delete · D force-delete · q quit'}
 				</Text>
 			</Box>
 		</Box>
