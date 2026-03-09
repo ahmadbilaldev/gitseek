@@ -1,0 +1,98 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="40" x2="1520" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#081426"/>
+      <stop offset="0.52" stop-color="#0B1D33"/>
+      <stop offset="1" stop-color="#091726"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(300 180) rotate(38) scale(520 360)">
+      <stop stop-color="#34D5FF" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#34D5FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1220 780) rotate(-22) scale(540 300)">
+      <stop stop-color="#87FFAA" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#87FFAA" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#57E8FF" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#A2FF70" stop-opacity="0.25"/>
+    </linearGradient>
+    <linearGradient id="chip" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#112841"/>
+      <stop offset="1" stop-color="#163451"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .title { font: 700 88px "Menlo", "SFMono-Regular", "Consolas", monospace; letter-spacing: 1px; }
+      .subtitle { font: 500 30px "Menlo", "SFMono-Regular", "Consolas", monospace; }
+      .body { font: 500 24px "Menlo", "SFMono-Regular", "Consolas", monospace; }
+      .mono { font: 500 22px "Menlo", "SFMono-Regular", "Consolas", monospace; }
+      .small { font: 500 18px "Menlo", "SFMono-Regular", "Consolas", monospace; }
+      .tiny { font: 500 16px "Menlo", "SFMono-Regular", "Consolas", monospace; }
+      .micro { font: 500 14px "Menlo", "SFMono-Regular", "Consolas", monospace; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="900" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1600" height="900" fill="url(#glowA)"/>
+  <rect x="0" y="0" width="1600" height="900" fill="url(#glowB)"/>
+
+  <rect x="42" y="34" width="1516" height="832" rx="26" stroke="url(#frame)" stroke-opacity="0.6" stroke-width="2"/>
+  <rect x="58" y="50" width="1484" height="800" rx="20" fill="#081224" fill-opacity="0.45" stroke="#48E1FF" stroke-opacity="0.12"/>
+
+  <text x="120" y="150" class="title" fill="#EAF8FF">gitseek</text>
+  <text x="560" y="150" class="subtitle" fill="#8BE7FF">Interactive Git Branch Explorer + PR Status</text>
+  <text x="120" y="200" class="body" fill="#9CB9D0">Launch fast branch triage from your terminal.</text>
+
+  <rect x="120" y="248" width="1360" height="98" rx="16" fill="#0C1A2D" stroke="#53E7FF" stroke-opacity="0.45"/>
+  <circle cx="154" cy="296" r="7" fill="#7EFFA8"/>
+  <text x="182" y="307" class="mono" fill="#D7FFE5">$ gitseek --mine --search "fix"</text>
+
+  <rect x="120" y="382" width="650" height="326" rx="16" fill="#0D1D31" stroke="#5CEBFF" stroke-opacity="0.35"/>
+  <text x="154" y="430" class="small" fill="#8FE8FF">Detected Branches</text>
+  <text x="154" y="468" class="micro" fill="#CBE1F5">branch                            ago   author        pr    last commit</text>
+  <text x="154" y="503" class="micro" fill="#83FFA4">copilot/add-openai-spec-supp...   3d    Ahmad Bilal   #795  refactor: code</text>
+  <text x="154" y="536" class="micro" fill="#B8D5EE">bilal/fix-dom                     4d    Ahmad Bilal   #834  fix: dompurify</text>
+  <text x="154" y="569" class="micro" fill="#B8D5EE">copilot/fix-shell-command-tr...   8d    copilot-swe   #738  fix: truncation</text>
+  <text x="154" y="602" class="micro" fill="#B8D5EE">bilal/studio-audit-3             12d    Ahmad Bilal         fix: job desc</text>
+  <text x="154" y="658" class="tiny" fill="#FDE38D">PR colors:</text>
+  <text x="260" y="658" class="tiny" fill="#7EFFA8">open</text>
+  <text x="324" y="658" class="tiny" fill="#73C8FF">merged</text>
+  <text x="412" y="658" class="tiny" fill="#FF9CB2">closed</text>
+  <text x="500" y="658" class="tiny" fill="#CFA8FF">draft</text>
+
+  <rect x="806" y="382" width="674" height="196" rx="16" fill="#0D1D31" stroke="#A8FF7D" stroke-opacity="0.35"/>
+  <text x="838" y="430" class="small" fill="#BCFF99">Flow</text>
+  <text x="838" y="470" class="tiny" fill="#D2E6F8">1. Load local + remote branches, sorted by latest commit</text>
+  <text x="838" y="504" class="tiny" fill="#D2E6F8">2. Pull PR state from GitHub CLI for each branch</text>
+  <text x="838" y="538" class="tiny" fill="#D2E6F8">3. Fuzzy search across name, message, and author</text>
+
+  <rect x="806" y="600" width="674" height="108" rx="16" fill="#0D1D31" stroke="#59E7FF" stroke-opacity="0.35"/>
+  <text x="838" y="646" class="small" fill="#8FE8FF">Controls</text>
+  <text x="838" y="676" class="micro" fill="#D2E6F8">j/k or arrows navigate   Enter checkout   d delete   D force delete</text>
+  <text x="838" y="700" class="micro" fill="#D2E6F8">/ search   m mine filter   r remote branches   q quit</text>
+
+  <rect x="120" y="742" width="1360" height="84" rx="14" fill="#0B1A2B" stroke="#52E7FF" stroke-opacity="0.26"/>
+  <rect x="146" y="764" width="178" height="40" rx="10" fill="url(#chip)" stroke="#56E8FF" stroke-opacity="0.45"/>
+  <text x="171" y="791" class="micro" fill="#C9ECFF">npm i -g gitseek</text>
+  <rect x="342" y="764" width="152" height="40" rx="10" fill="url(#chip)" stroke="#A8FF7D" stroke-opacity="0.4"/>
+  <text x="384" y="791" class="micro" fill="#DAFFC6">MIT</text>
+  <rect x="512" y="764" width="210" height="40" rx="10" fill="url(#chip)" stroke="#56E8FF" stroke-opacity="0.45"/>
+  <text x="542" y="791" class="micro" fill="#C9ECFF">Node.js 18+</text>
+  <rect x="740" y="764" width="272" height="40" rx="10" fill="url(#chip)" stroke="#56E8FF" stroke-opacity="0.45"/>
+  <text x="772" y="791" class="micro" fill="#C9ECFF">GitHub CLI integration</text>
+
+  <text x="1068" y="791" class="micro" fill="#7FE9FF">github.com/ahmadbilaldev/gitseek</text>
+
+  <line x1="350" y1="220" x2="490" y2="220" stroke="#57E8FF" stroke-opacity="0.35" stroke-dasharray="8 8"/>
+  <line x1="500" y1="220" x2="640" y2="220" stroke="#A8FF7D" stroke-opacity="0.35" stroke-dasharray="8 8"/>
+  <circle cx="340" cy="220" r="3" fill="#57E8FF" filter="url(#softGlow)"/>
+  <circle cx="490" cy="220" r="3" fill="#57E8FF" filter="url(#softGlow)"/>
+  <circle cx="640" cy="220" r="3" fill="#A8FF7D" filter="url(#softGlow)"/>
+</svg>
