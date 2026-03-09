@@ -8,13 +8,20 @@
 		"gs": "dist/index.mjs"
 	},
 	"main": "dist/index.mjs",
+	"files": ["dist"],
 	"scripts": {
 		"build": "tsup",
 		"dev": "tsup --watch src",
 		"typecheck": "tsc --noEmit",
-		"start": "node dist/index.mjs"
+		"start": "node dist/index.mjs",
+		"prepublishOnly": "pnpm build"
 	},
-	"keywords": ["git", "branch", "cli", "github", "interactive"],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ahmadbilaldev/gitseek.git"
+	},
+	"author": "Ahmad Bilal <ahmadbilaldev@gmail.com>",
+	"keywords": ["git", "branch", "cli", "github", "interactive", "tui", "pr"],
 	"license": "MIT",
 	"dependencies": {
 		"chalk": "^5.5.0",

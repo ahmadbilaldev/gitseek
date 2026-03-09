@@ -2,7 +2,7 @@
 
 Interactive git branch explorer with GitHub PR status.
 
-![gitseek launch graphic](./assets/gitseek-launch.svg)
+![gitseek launch graphic](./assets/gitseek.png)
 
 Browse, search, and manage git branches from a single interactive TUI — sorted by latest, filtered by author, with inline PR numbers and status via GitHub CLI.
 
